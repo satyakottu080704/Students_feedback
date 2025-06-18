@@ -1,3 +1,4 @@
+from itertools import tee
 from flask import Flask, render_template, request, redirect
 import mysql.connector
 from config import db_config
@@ -11,7 +12,7 @@ def get_db_connection():
 def index():
     return render_template('index.html')
 
-@app.route('/feedback', methods=['GET', 'POST'])  # ✅ Fix: 'method' ➝ 'methods'
+@app.route('/feedback', methods=['GET', 'POST'])
 def feedback():
     if request.method == 'POST':
         name = request.form['name']
@@ -20,10 +21,10 @@ def feedback():
 
         conn = get_db_connection()
         cursor = conn.cursor()
-        # ✅ Fix: Use %s (lowercase), not %S (uppercase)
-        cursor.execute('INSERT INTO feedback (student_name, email, comment) VALUES (%s, %s, %s)', 
+        cursor.execute('INSERT INTO feedback (student_name, email, comments) VALUES (%s, %s, %s)', 
                        (name, email, comment))
         conn.commit()
+        cursor.close()
         conn.close()
         return redirect('/')
     return render_template('feedback.html')
@@ -34,8 +35,13 @@ def admin():
     cursor = conn.cursor(dictionary=True)
     cursor.execute('SELECT * FROM feedback ORDER BY submitted_at DESC')
     feedbacks = cursor.fetchall()
+    cursor.close()
     conn.close()
     return render_template('admin.html', feedbacks=feedbacks)
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+
+
+ 
