@@ -8,7 +8,47 @@
 </head>
 
 <body>
-    <h1>admin</h1>
+    {% extends "base.html" %}
+    {% block content %}
+    <h2>All Feedbacks</h2>
+    <table class="table table-bordered table-striped">
+        <thread>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Comment</th>
+                    <th>Submitted At</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for fb inn feedbacks %}
+                <tr>
+                    <td>{{fn.id}}</td>
+                    <td>{{ fb.student_name }}</td>
+                    <td>{{ fb.email }}</td>
+                    <td>{{ fb.comment }}</td>
+                    <td>{{ fb.submitted_at }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </thread>
+    </table>
+    {% enblock %}
 </body>
 
 </html>
+
+
+
+
+
+
+<table>
+
+
+
+    {% endfor %}
+</table>
+<a href="/">Back to Home</a>
+{% endblock %}
